@@ -1,5 +1,5 @@
 <?php
-  require_once('fetch-api.php');
+  require_once('fetch_api.php');
 
   class TelegramBot {
 
@@ -15,6 +15,10 @@
 
     public function getMe(){
       return json_decode(fetch($this->_getApiMethodUrl("getMe"), 'POST'));
+    }
+
+    public function getUpdate(){
+      return json_decode(fetch($this->_getApiMethodUrl("getUpdates"), 'POST'));
     }
   }
 
