@@ -17,8 +17,14 @@
       return json_decode(fetch($this->_getApiMethodUrl("getMe"), 'POST'));
     }
 
-    public function getUpdate(){
+    public function getUpdates(){
       return json_decode(fetch($this->_getApiMethodUrl("getUpdates"), 'POST'));
+    }
+
+    public function setWebhook($url){
+        return json_decode(fetch($this->_getApiMethodUrl("setWebhook"), 'POST', array(
+          "url" => $url
+        )));
     }
   }
 
