@@ -4,6 +4,7 @@
   class TelegramBot {
 
     protected $botId;
+    protected $url;
 
     function __construct($botId){
       $this->botId = $botId;
@@ -21,10 +22,18 @@
       return json_decode(fetch($this->_getApiMethodUrl("getUpdates"), 'POST'));
     }
 
-    public function setWebhook($url){
-        return json_decode(fetch($this->_getApiMethodUrl("setWebhook"), 'POST', array(
-          "url" => $url
-        )));
+    public function setWebhook($argurl){
+      $this->url = $argurl;
+      return json_decode(fetch($this->_getApiMethodUrl("setWebhook"), 'POST', array(
+        "url" => $argurl
+      )));
+    }
+
+    public function getWebhookInfo(){
+      if(isset($this->url)){
+        return json_decode(fetch($this->_getApiMethodUrl("getWebhookInfo")));
+      }else
+        echo("Webhook not set");
     }
   }
 
