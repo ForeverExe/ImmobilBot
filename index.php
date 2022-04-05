@@ -6,9 +6,9 @@
     
     var_dump($bot->getMe());
     echo("<br/> <br/>");
-    var_dump($bot->getUpdates());
+    //var_dump($bot->getUpdates());
     echo("<br/> <br/>");
-    var_dump($bot->setWebhook("https://b650-5-170-5-16.ngrok.io"));
+    var_dump($bot->setWebhook("https://b650-5-170-5-16.ngrok.io/ImmobilBot/bot_api/json_handler.php"));
   }
   catch(ErrorException $e){
     echo $e->getMessage();
