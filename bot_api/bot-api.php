@@ -3,11 +3,13 @@
 
   class TelegramBot {
 
+    protected $chatId;
     protected $botId;
     protected $url;
 
     function __construct($botId){
       $this->botId = $botId;
+      $this->chatId = $this->getChatId();
     }
 
     private function  _getApiMethodUrl($methodName){
@@ -34,6 +36,15 @@
         return json_decode(fetch($this->_getApiMethodUrl("getWebhookInfo")));
       }else
         echo("Webhook not set");
+    }
+
+    /**
+     * Prende un json dell'update e prende la sottostringa contenete l'id della chat,
+     * da avviare idealmente in ogni /start da parte dell'utente
+     */
+    public function getChatId(){
+      $str = $this->getUpdates();
+      
     }
   }
 
