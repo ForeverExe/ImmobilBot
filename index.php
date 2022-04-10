@@ -8,9 +8,10 @@
     echo("<br/> <br/>");
     //var_dump($bot->getUpdates());
     echo("<br/> <br/>");
-    var_dump($bot->setWebhook("https://1b06-5-170-40-94.ngrok.io/ImmobilBot/bot_api/json_handler.php"));
+    var_dump($bot->setWebhook("https://b2ca-78-138-33-188.ngrok.io/ImmobilBot/bot_api/json_handler.php"));
     echo("<br/> <br/>");
     var_dump($bot->getWebhookInfo());
+    echo("<br/> <br/>");
   }
   catch(ErrorException $e){
     echo $e->getMessage();
