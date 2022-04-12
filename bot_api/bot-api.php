@@ -3,7 +3,6 @@
 
   class TelegramBot {
 
-    protected $chatId;
     protected $botId;
     protected $url;
 
@@ -35,6 +34,13 @@
         return json_decode(fetch($this->_getApiMethodUrl("getWebhookInfo")));
       }else
         echo("Webhook not set");
+    }
+
+    public function sendMessage($text, $chatId){
+      fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
+        "chat_id" => $chatId,
+        "text" => $text
+      ));
     }
   }
 
