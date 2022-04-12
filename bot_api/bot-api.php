@@ -37,6 +37,7 @@
     }
 
     public function sendMessage($text, $chatId){
+      
       fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
         "chat_id" => $chatId,
         "text" => $text

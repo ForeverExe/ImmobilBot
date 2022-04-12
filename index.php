@@ -13,9 +13,6 @@
     var_dump($bot->getWebhookInfo());
     echo("<br/> <br/>");
 
-    if(isset($_POST['sendChat'])){
-      
-    }
   }
   catch(ErrorException $e){
     echo $e->getMessage();
