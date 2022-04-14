@@ -20,7 +20,7 @@
       break;
     }
     case "/printa":{
-      $bot->sendMessage($request->message->chat->id, $request->message->text);
+      $bot->sendMessageReply($request->message->chat->id, "Scrivi la stringa da stampare");
       break;
     }
     case "/somma":{

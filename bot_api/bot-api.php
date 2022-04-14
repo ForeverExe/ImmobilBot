@@ -37,10 +37,16 @@
     }
 
     public function sendMessage($chatId, $text){
-      
       fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
         "chat_id" => $chatId,
         "text" => $text
+      ));
+    }
+    public function sendMessageReply($chatId, $text){
+      fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
+        "chat_id" => $chatId,
+        "text" => $text,
+        "reply_markup" => "ForceReply"
       ));
     }
   }
