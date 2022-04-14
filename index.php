@@ -12,8 +12,6 @@
     echo("<br/> <br/>");
     var_dump($bot->getWebhookInfo());
     echo("<br/> <br/>");
-    $bot->sendMessage("798028646","prova");
-
   }
   catch(ErrorException $e){
     echo $e->getMessage();
