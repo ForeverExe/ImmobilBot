@@ -10,6 +10,22 @@
   var_dump($result);
   $request = json_decode($json, false); //Se lo metti a falso, ritorna un oggeto, se lo metti a vero ritorna un array associativo
 
-  $bot->sendMessage($request->message->chat->id , $request->message->text);
+  switch($request->message->text){
+    case "/ehi":{
+      $bot->sendMessage($request->message->chat->id, "ehi");
+      break;
+    }
+    case "/ciao":{
+      $bot->sendMessage($request->message->chat->id, "Ciao!");
+      break;
+    }
+    case "/printa":{
+      $bot->sendMessage($request->message->chat->id, $request->message->text);
+      break;
+    }
+    case "/somma":{
+      break;
+    }
+  }
 
 ?>
