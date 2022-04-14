@@ -36,7 +36,7 @@
         echo("Webhook not set");
     }
 
-    public function sendMessage($text, $chatId){
+    public function sendMessage($chatId, $text){
       
       fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
         "chat_id" => $chatId,

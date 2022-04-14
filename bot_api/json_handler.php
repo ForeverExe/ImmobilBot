@@ -8,7 +8,7 @@
   
   $result = file_put_contents("hook.log", $json, FILE_APPEND);
   var_dump($result);
-  $request = json_decode($json, true);
+  $request = json_decode($json, false); //Se lo metti a falso, ritorna un oggeto, se lo metti a vero ritorna un array associativo
 
   $bot->sendMessage($request->message->chat->id , $request->message->text);
 
