@@ -1,6 +1,6 @@
 <?php
   require_once('fetch_api.php');
-
+  
   class TelegramBot {
 
     protected $botId;

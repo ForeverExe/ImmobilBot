@@ -8,6 +8,9 @@
   
   $result = file_put_contents("hook.log", $json, FILE_APPEND);
   var_dump($result);
+  file_put_contents("last.json", $json);
+
+
   $request = json_decode($json, false); //Se lo metti a falso, ritorna un oggeto, se lo metti a vero ritorna un array associativo
 
   switch($request->message->text){

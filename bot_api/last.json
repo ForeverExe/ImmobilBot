@@ -1,0 +1,28 @@
+{
+    "update_id": 345178994,
+    "message": {
+        "message_id": 64,
+        "from": {
+            "id": 798028646,
+            "is_bot": false,
+            "first_name": "Matteo \"Forever.exe\"",
+            "username": "Forever_exe",
+            "language_code": "it"
+        },
+        "chat": {
+            "id": 798028646,
+            "first_name": "Matteo \"Forever.exe\"",
+            "username": "Forever_exe",
+            "type": "private"
+        },
+        "date": 1650709930,
+        "text": "/ehi",
+        "entities": [
+            {
+                "offset": 0,
+                "length": 4,
+                "type": "bot_command"
+            }
+        ]
+    }
+}
