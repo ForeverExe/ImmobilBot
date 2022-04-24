@@ -49,6 +49,33 @@
         "reply_markup" => "ForceReply"
       ));
     }
+
+    public function checkStatus($chatID){
+      $db = new mysqli("localhost", "root", "", "telegrambot");
+      $sql = "SELECT 'fase' FROM 'status' WHERE 'chatid' = $chatID";
+      $rs = $db->query($sql);
+      if($rs->num_rows != 0){
+        $str = $rs->fetch_assoc();
+        return $result = explode(":", $str['fase']);
+      }else{
+        return null;
+      }
+      $db->close();
+    }
+
+    public function setStatus($chatID, $fase, $vars = null){
+      $db = new mysqli("localhost", "root", "", "telegrambot");
+      $sql = "INSERT INTO status('chatid', 'fase', 'variabili') VALUES ($chatID, $fase, $vars)";
+      if($db->query($sql) == false){
+        fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
+          "chat_id" => $chatID,
+          "text" => "Errore nell'inserimento della fase, riprovare."
+        ));
+      }
+
+
+      $db->close();
+    }
   }
 
 ?>
