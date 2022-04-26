@@ -13,37 +13,52 @@
   //ottengo l'oggetto json da utilizzare
   $request = json_decode($json, false); //Se lo metti a falso, ritorna un oggeto, se lo metti a vero ritorna un array associativo
   
-  //imposto l'id della chat che ho in questo momento
+  //imposto l'id della chat ed il messaggio che ho in questo momento
   $chatID = $request->message->chat->id;
+  $text = $request->message->text;
   
   //varie casistiche dove poi ci saranno i vari comandi,
   //controllo per ogni richiesta se ci sono dei comandi in sospeso nella chat, ritorna il primo valore
   //dell'array per il comando, il secondo e' la fase
   $status = $bot->checkStatus($chatID);
-  switch($status[0]){
-    case "/ehi":{
-      $bot->sendMessage($chatID, "ehi");
-      break;
-    }
-    case "/ciao":{
-      $bot->sendMessage($chatID, "Ciao!");
-      break;
-    }
-    case "/printa":{
-      $bot->sendMessageReply($chatID, "Scrivi la stringa da stampare");
-      break;
-    }
-    case "/somma":{
-      if($status[1] == null){
-        $bot->sendMessage($chatID, "Inserisci il primo numero da sommare");
-        $bot->setStatus($chatID, "/somma:primoN");
+
+
+  //struttura di gestione, prima controla che ci siano dei comandi in sospeso, altrimenti vai con i comandi in
+  //fase iniziale
+  if($status != null){
+    switch($status[0]){
+      case "/somma":{
+        switch($status[1]){
+          case "primoN":{
+            
+            $bot->setStatus($chatID, "/somma:primoN");
+          }
+        }
       }
-      break;
     }
-    default:{
-      $bot->sendMessage($chatID, "Comando non riconosciuto.");
-      break;
+  }else{
+    switch($text){
+      case "/ehi":{
+        $bot->sendMessage($chatID, "ehi");
+        break;
+      }
+      case "/ciao":{
+        $bot->sendMessage($chatID, "Ciao!");
+        break;
+      }
+      case "/printa":{
+        $bot->sendMessageReply($chatID, "Scrivi la stringa da stampare");
+        break;
+      }
+      case "/somma":{
+        $bot->setStatus($chatID, "/somma:primoN");
+        $bot->sendMessage($chatID, "Inserisci il primo numero da sommare");
+        break;
+      }
+      default:{
+        $bot->sendMessage($chatID, "Comando non riconosciuto.");
+        break;
+      }
     }
   }
-
 ?>

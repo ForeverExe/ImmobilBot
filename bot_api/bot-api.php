@@ -51,9 +51,9 @@
     }
 
     /**
-     * IControlla un determinato status nel DB
-     * @param int chatID - Id della chat interessata
-     * @return Array - Array della fase, [0] = comando [1] = fase
+     * Controlla un determinato status nel DB
+     * @return Array Array della fase, [0] = comando [1] = fase
+     * @return Null In caso non sia presente uno stato nel DB
      */
     public function checkStatus($chatID){
       $db = new mysqli("localhost", "root", "", "botTelegram");
@@ -61,18 +61,18 @@
       $rs = $db->query($sql);
       if($rs->num_rows != 0){
         $str = $rs->fetch_all();
-        return $result = explode(":", $str);
+        return $result = explode(":", $str); //ritorna l'array se e' presente
       }else{
-        return null;
+        return null; //ritorna null se vuoto
       }
       $db->close();
     }
 
     /**
      * Imposta uno status nel DB, controlla la presenza e se c'e' aggiorna invece di crearlo
-     * @param int chatID - Id della chat interessata
-     * @param string fase - Fase da inserire
-     * @param string variabili - Json codificato in stringa contenente variabili
+     * @param int chatID Id della chat interessata
+     * @param string fase Fase da inserire
+     * @param string variabili Json codificato in stringa contenente variabili
      */
     public function setStatus($chatID, $fase, $vars = null){
       $db = new mysqli("localhost", "root", "", "botTelegram");
@@ -86,8 +86,7 @@
             "text" => "Errore nell'aggiornamento nella fase '$fase', riprovare."
           ));
         }
-      
-        //altrimenti crea
+      //altrimenti crea
       }else{
         $sql = "INSERT INTO status('chatid', 'stato', 'variabili') VALUES ($chatID, $fase, $vars)";
         if($db->query($sql) == false){
@@ -99,6 +98,19 @@
       }
 
       $db->close();
+    }
+
+    /**
+     * Ritorna le variabili dalla fase, dato una determinata chat
+     */
+    public function getVars($chatID){
+      $db = new mysqli("localhost", "root", "", "botTelegram");
+      $rs = $db->query("SELECT variabili FROM 'status' WHERE chatid = $chatID");
+      if($rs->num_rows != 0){
+        return $rs->fetch_all();
+      }else{
+        return null;
+      }
     }
   }
 
