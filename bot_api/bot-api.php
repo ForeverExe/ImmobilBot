@@ -50,29 +50,53 @@
       ));
     }
 
+    /**
+     * IControlla un determinato status nel DB
+     * @param int chatID - Id della chat interessata
+     * @return Array - Array della fase, [0] = comando [1] = fase
+     */
     public function checkStatus($chatID){
-      $db = new mysqli("localhost", "root", "", "telegrambot");
-      $sql = "SELECT 'fase' FROM 'status' WHERE 'chatid' = $chatID";
+      $db = new mysqli("localhost", "root", "", "botTelegram");
+      $sql = "SELECT 'stato' FROM 'status' WHERE 'chatid' = $chatID";
       $rs = $db->query($sql);
       if($rs->num_rows != 0){
-        $str = $rs->fetch_assoc();
-        return $result = explode(":", $str['fase']);
+        $str = $rs->fetch_all();
+        return $result = explode(":", $str);
       }else{
         return null;
       }
       $db->close();
     }
 
+    /**
+     * Imposta uno status nel DB, controlla la presenza e se c'e' aggiorna invece di crearlo
+     * @param int chatID - Id della chat interessata
+     * @param string fase - Fase da inserire
+     * @param string variabili - Json codificato in stringa contenente variabili
+     */
     public function setStatus($chatID, $fase, $vars = null){
-      $db = new mysqli("localhost", "root", "", "telegrambot");
-      $sql = "INSERT INTO status('chatid', 'fase', 'variabili') VALUES ($chatID, $fase, $vars)";
-      if($db->query($sql) == false){
-        fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
-          "chat_id" => $chatID,
-          "text" => "Errore nell'inserimento della fase, riprovare."
-        ));
+      $db = new mysqli("localhost", "root", "", "botTelegram");
+      
+      //se presente nel db -> update
+      if($db->query("SELECT * FROM 'status' WHERE chatid")->num_rows != 0){
+        $sql = "UPDATE status SET variabili = '$vars' AND stato = '$fase' WHERE chatid = $chatID";
+        if($db->query($sql) == false){
+          fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
+            "chat_id" => $chatID,
+            "text" => "Errore nell'aggiornamento nella fase '$fase', riprovare."
+          ));
+        }
+      
+        //altrimenti crea
+      }else{
+        $sql = "INSERT INTO status('chatid', 'stato', 'variabili') VALUES ($chatID, $fase, $vars)";
+        if($db->query($sql) == false){
+          fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
+            "chat_id" => $chatID,
+            "text" => "Errore nell'inserimento della fase '$fase', riprovare."
+          ));
+        }
       }
-
 
       $db->close();
     }
