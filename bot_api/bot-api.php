@@ -101,7 +101,8 @@
     }
 
     /**
-     * Ritorna le variabili dalla fase, dato una determinata chat
+     * Ritorna le variabili dalla fase, dato una determinata chat. E' una stringa json da fare con encode/decode
+     * @param int chatID id della chat interessata
      */
     public function getVars($chatID){
       $db = new mysqli("localhost", "root", "", "botTelegram");
@@ -110,6 +111,26 @@
         return $rs->fetch_all();
       }else{
         return null;
+      }
+    }
+
+    /**
+     * Imposta le variabili della fase data una chat. E' una stringa json da fare con encode/decode
+     * *ATTENZIONE* Di default $vars equivale a null, chiamando la funzione senza inserire argomenti cancellera' le variabili attualmente sul DB 
+     * @param int chatID id della chat interessata
+     * @param string vars stringa univoca contenente stringa da usare come json
+     */
+    public function setVars($chatID, $vars = null){
+      $db = new mysqli("localhost", "root", "", "botTelegram");
+      //controllo presenza riga
+      if($db->query("SELECT * FROM 'status' WHERE chatid = $chatID")->num_rows < 1){
+        fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
+          "chat_id" => $chatID,
+          "text" => "Errore nell'inserimento delle variabili, riprovare."
+        ));
+        //update in caso di presenza di tupla
+      }else{
+        $db->query("UPDATE 'status' SET variabili = $vars WHERE chatid = $chatID");
       }
     }
   }

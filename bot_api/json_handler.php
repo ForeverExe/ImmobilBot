@@ -30,8 +30,13 @@
       case "/somma":{
         switch($status[1]){
           case "primoN":{
-            
-            $bot->setStatus($chatID, "/somma:primoN");
+            //conversione stringa in numero
+            $num = settype($text, "integer");
+            $num = intval($num);
+
+            $json = array("primoN"=> $num);
+            $bot->getVars($chatID);
+            $bot->setStatus($chatID, "/somma:secondoN");
           }
         }
       }
