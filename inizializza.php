@@ -8,7 +8,7 @@
     echo("<br/> <br/>");
     //var_dump($bot->getUpdates());
     echo("<br/> <br/>");
-    var_dump($bot->setWebhook("https://1dd3-5-170-40-60.ngrok.io/ImmobilBot/bot_api/json_handler.php"));
+    var_dump($bot->setWebhook("https://f428-5-170-0-18.ngrok.io/ImmobilBot/bot_api/json_handler.php"));
     echo("<br/> <br/>");
     var_dump($bot->getWebhookInfo());
     echo("<br/> <br/>");
