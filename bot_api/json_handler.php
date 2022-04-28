@@ -8,20 +8,16 @@
   $json = file_get_contents('php://input');
   //salvo i messaggi che arrivano
   $result = file_put_contents("hook.log", $json, FILE_APPEND);
-  file_put_contents("last.json", $json);
+  $last = file_put_contents("last.json", $json);
 
   //ottengo l'oggetto json da utilizzare
   $request = json_decode($json, false); //Se lo metti a falso, ritorna un oggeto, se lo metti a vero ritorna un array associativo
-  
   //imposto l'id della chat ed il messaggio che ho in questo momento
   $chatID = $request->message->chat->id;
   $text = $request->message->text;
   
-  //varie casistiche dove poi ci saranno i vari comandi,
-  //controllo per ogni richiesta se ci sono dei comandi in sospeso nella chat, ritorna il primo valore
-  //dell'array per il comando, il secondo e' la fase
+  //controllo stato
   $status = $bot->checkStatus($chatID);
-
 
   //struttura di gestione, prima controla che ci siano dei comandi in sospeso, altrimenti vai con i comandi in
   //fase iniziale
