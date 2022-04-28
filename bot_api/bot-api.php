@@ -70,11 +70,12 @@
 
     /**
      * Imposta uno status nel DB, controlla la presenza e se c'e' aggiorna invece di crearlo
+     *  *Attenzione*: $fase e $vars sono null di default, se viene chiamata la funzione senza indicare gli argomenti questi verranno cancellati dal db
      * @param int chatID Id della chat interessata
      * @param string fase Fase da inserire
      * @param string variabili Json codificato in stringa contenente variabili
      */
-    public function setStatus($chatID, $fase, $vars = null){
+    public function setStatus($chatID, $fase = null, $vars = null){
       $db = new mysqli("localhost", "root", "", "botTelegram");
       
       //se presente nel db -> update
