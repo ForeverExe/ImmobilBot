@@ -57,7 +57,7 @@
      */
     public function checkStatus($chatID){
       $db = new mysqli("localhost", "root", "", "botTelegram");
-      $sql = "SELECT 'stato' FROM 'status' WHERE 'chatid' = $chatID";
+      $sql = "SELECT stato FROM status WHERE chatid = $chatID";
       $rs = $db->query($sql);
       if($rs->num_rows != 0){
         $str = $rs->fetch_all();
@@ -79,7 +79,7 @@
       $db = new mysqli("localhost", "root", "", "botTelegram");
       
       //se presente nel db -> update
-      if($db->query("SELECT * FROM 'status' WHERE chatid")->num_rows != 0){
+      if($db->query("SELECT * FROM status WHERE chatid")->num_rows != 0){
         $sql = "UPDATE status SET variabili = '$vars' AND stato = '$fase' WHERE chatid = $chatID";
         if($db->query($sql) == false){
           fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
@@ -89,7 +89,7 @@
         }
       //altrimenti crea
       }else{
-        $sql = "INSERT INTO status('chatid', 'stato', 'variabili') VALUES ($chatID, $fase, $vars)";
+        $sql = "INSERT INTO status(chatid, stato, variabili) VALUES ($chatID, $fase, $vars)";
         if($db->query($sql) == false){
           fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
             "chat_id" => $chatID,
@@ -107,7 +107,7 @@
      */
     public function getVars($chatID){
       $db = new mysqli("localhost", "root", "", "botTelegram");
-      $rs = $db->query("SELECT variabili FROM 'status' WHERE chatid = $chatID");
+      $rs = $db->query("SELECT variabili FROM status WHERE chatid = $chatID");
       if($rs->num_rows != 0){
         return $rs->fetch_all();
       }else{
@@ -124,14 +124,14 @@
     public function setVars($chatID, $vars = null){
       $db = new mysqli("localhost", "root", "", "botTelegram");
       //controllo presenza riga
-      if($db->query("SELECT * FROM 'status' WHERE chatid = $chatID")->num_rows < 1){
+      if($db->query("SELECT * FROM status WHERE chatid = $chatID")->num_rows < 1){
         fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
           "chat_id" => $chatID,
           "text" => "Errore nell'inserimento delle variabili, riprovare."
         ));
         //update in caso di presenza di tupla
       }else{
-        $db->query("UPDATE 'status' SET variabili = $vars WHERE chatid = $chatID");
+        $db->query("UPDATE status SET variabili = $vars WHERE chatid = $chatID");
       }
     }
   }
