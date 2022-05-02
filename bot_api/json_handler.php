@@ -57,12 +57,12 @@
         break;
       }
       case "/printa":{
-        $bot->sendMessageReply($chatID, "Scrivi la stringa da stampare");
+        $bot->sendMessage($chatID, "Scrivi la stringa da stampare");
         break;
       }
       case "/somma":{
-        $bot->setStatus($chatID, "/somma:primoN");
         $bot->sendMessage($chatID, "Inserisci il primo numero da sommare");
+        $bot->setStatus($chatID, "/somma:primoN");
         break;
       }
       default:{
