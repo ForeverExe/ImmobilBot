@@ -10,3 +10,4 @@ ATTENZIONE: A CAUSA DI PROBLEMI DI PERMESSI, IL CORE DEL BOT "json_handler.php" 
 TODO: 
 - Testare il codice nuovo dopo averlo sistemato, importante veriricare correttamente gli if
 - guardare le query dei singoli dati
+- usare i get error
