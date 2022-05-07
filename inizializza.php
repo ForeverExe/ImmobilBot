@@ -13,17 +13,6 @@
     var_dump($bot->getWebhookInfo());
     echo("<br/> <br/>");
 
-    //prova db
-    $db = new mysqli("localhost", "root", "", "botTelegram");
-    $sql = "SELECT stato FROM status WHERE chatid = 798028646";
-    $rs = $db->query($sql);
-    if($rs->num_rows != 0){
-      $str = $rs->fetch_all();
-      echo(explode(":", $str));
-    }else{
-      echo("problema");
-    }
-
   }
   catch(ErrorException $e){
     echo $e->getMessage();
