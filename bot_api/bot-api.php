@@ -94,9 +94,10 @@
      */
     public function getVars($chatID){
       $db = new mysqli("localhost", "root", "", "botTelegram");
-      $rs = $db->query("SELECT variabili FROM status WHERE chatid = $chatID");
+      $rs = $db->query("SELECT * FROM status WHERE chatid = $chatID");
       if($rs->num_rows != 0){
-        return $rs->fetch_all();
+        $result = $rs->fetch_assoc();
+        return $result['variabili'];
       }else{
         return null;
       }
