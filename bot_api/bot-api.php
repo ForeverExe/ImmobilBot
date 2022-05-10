@@ -70,10 +70,18 @@
      */
     public function setStatus($chatID, $fase = NULL, $vars = NULL){
       $db = new mysqli("localhost", "root", "", "botTelegram");
-      
       //se presente nel db -> update
       if($db->query("SELECT * FROM status WHERE chatid = $chatID")->num_rows != 0){
-        $sql = "UPDATE status SET variabili = '$vars', stato = '$fase' WHERE chatid = $chatID";
+        $sqlInizio = "UPDATE status SET ";
+        $sqlFine= " WHERE chatid = $chatID";
+        
+        if($fase == NULL){
+          $sqlInizio += "variabili = NULL,";
+        }
+        if($vars == NULL){
+          $sqlInizio += "stato = NULL";
+        }
+        $sql = $sqlInizio + $sqlFine;
         if($db->query($sql) == false){
           echo($db->error_log);
         }

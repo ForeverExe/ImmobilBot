@@ -29,8 +29,8 @@
         switch($status[1]){
           //crea l'array per il json ed inserisco il numero
           case "primoN":{
-            $num = settype($text, "integer");
-            $num = intval($num);
+            settype($text, "integer");
+            $num = intval($text);
             $bot->setStatus($chatID, "/somma:secondoN", json_encode(array("num1" => $num)));
             $bot->sendMessage($chatID, "Inserisci il secondo numero da sommare");
             break;
@@ -38,7 +38,7 @@
 
           //usa il json e somma
           case "secondoN":{
-            $num2 = settype($text, "integer");
+            settype($text, "integer");
             $num2 = intval($num2);
 
             $json = json_decode($bot->getVars($chatID));
