@@ -5,8 +5,6 @@ Le fasi posso suddividerle in " comando:fase " dove con la funzione explode(":")
 a quel punto posso usare uno switch con delle funzioni e/o degli if dove controllo l'array ricevuto per indirizzarlo nella parte corretta.
 Poi il comando far' quello per cui e stato creato.
 
-10 mag 2022: ultimo giorno di prova con i comandi a piu' fasi, se non vanno passo a comandi unici
-
 TODO: 
 - Testare il codice nuovo dopo averlo sistemato, importante veriricare correttamente gli if
 - guardare le query dei singoli dati
