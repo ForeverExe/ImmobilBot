@@ -68,26 +68,20 @@
      * @param string fase Fase da inserire
      * @param string variabili Json codificato in stringa contenente variabili
      */
-    public function setStatus($chatID, $fase = null, $vars = null){
+    public function setStatus($chatID, $fase = NULL, $vars = NULL){
       $db = new mysqli("localhost", "root", "", "botTelegram");
       
       //se presente nel db -> update
       if($db->query("SELECT * FROM status WHERE chatid")->num_rows != 0){
         $sql = "UPDATE status SET variabili = '$vars' AND stato = '$fase' WHERE chatid = $chatID";
         if($db->query($sql) == false){
-          fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
-            "chat_id" => $chatID,
-            "text" => "Errore nell'aggiornamento nella fase '$fase', riprovare."
-          ));
+          echo($db->error_log);
         }
       //altrimenti crea
       }else{
-        $sql = "INSERT INTO status (chatid, stato, variabili) VALUES( $chatID, $fase, $vars)";
+        $sql = "INSERT INTO status (chatid, stato, variabili) VALUES($chatID, $fase, $vars)";
         if($db->query($sql) == false){
-          fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
-            "chat_id" => $chatID,
-            "text" => "Errore nell'inserimento della fase '$fase', riprovare."
-          ));
+          echo($db->error_log);
         }
       }
 
@@ -106,6 +100,8 @@
       }else{
         return null;
       }
+
+      $db->close();
     }
 
     /**
@@ -126,6 +122,8 @@
       }else{
         $db->query("UPDATE status SET variabili = $vars WHERE chatid = $chatID");
       }
+
+      $db->close();
     }
   }
 

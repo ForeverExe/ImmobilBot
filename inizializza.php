@@ -12,7 +12,8 @@
     echo("<br/> <br/>");
     var_dump($bot->getWebhookInfo());
     echo("<br/> <br/>");
-    
+    $bot->setStatus(798028646, "/somma:primoN", "{num1:5}");
+
   }
   catch(ErrorException $e){
     echo $e->getMessage();
