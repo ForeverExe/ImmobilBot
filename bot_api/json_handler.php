@@ -57,6 +57,17 @@
         $bot->setStatus($chatID, "/somma:primoN");
         break;
       }
+      case "/elencaImmobili":{
+        $db = new mysqli("localhost", "root", "", "p72e6");
+        $sql = "SELECT * FROM p73e6_immobili";
+        $rs = $db->query($sql);
+
+        break;
+      }
+      case "/elencaPerZone":{
+
+        break;
+      }
       default:{
         $bot->sendMessage($chatID, "Comando non riconosciuto.");
         break;

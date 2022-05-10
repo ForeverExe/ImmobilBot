@@ -72,14 +72,14 @@
       $db = new mysqli("localhost", "root", "", "botTelegram");
       
       //se presente nel db -> update
-      if($db->query("SELECT * FROM status WHERE chatid")->num_rows != 0){
-        $sql = "UPDATE status SET variabili = '$vars' AND stato = '$fase' WHERE chatid = $chatID";
+      if($db->query("SELECT * FROM status WHERE chatid = $chatID")->num_rows != 0){
+        $sql = "UPDATE status SET variabili = '$vars', stato = '$fase' WHERE chatid = $chatID";
         if($db->query($sql) == false){
           echo($db->error_log);
         }
       //altrimenti crea
       }else{
-        $sql = "INSERT INTO status (chatid, stato, variabili) VALUES($chatID, $fase, $vars)";
+        $sql = "INSERT INTO status (chatid, stato, variabili) VALUES($chatID, '$fase', '$vars')";
         if($db->query($sql) == false){
           echo($db->error_log);
         }
