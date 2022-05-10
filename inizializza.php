@@ -8,9 +8,11 @@
     echo("<br/> <br/>");
     //var_dump($bot->getUpdates());
     echo("<br/> <br/>");
-    var_dump($bot->setWebhook("https://2f7e-5-170-108-213.ngrok.io/ImmobilBot/bot_api/json_handler.php"));
+    //var_dump($bot->setWebhook("https://2e2f-78-138-33-188.ngrok.io/ImmobilBot/bot_api/json_handler.php"));
     echo("<br/> <br/>");
-    var_dump($bot->getWebhookInfo());
+    //var_dump($bot->getWebhookInfo());
+    $arr = $bot->checkStatus(798028646);
+    echo($arr[0]."-".$arr[1]);
     echo("<br/> <br/>");
 
     //$json = json_encode(array("primo" => 1));

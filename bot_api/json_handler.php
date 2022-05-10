@@ -4,20 +4,22 @@
 
   $bot = new TelegramBot("5237718388:AAGZBi5qCrLIH6KgT8P2jYi3ZZ69R71HCjk");
 
-  //salvo in una variabile cio che mi arriva dalle richieste
   $json = file_get_contents('php://input');
-  //salvo i messaggi che arrivano
   $result = file_put_contents("hook.log", $json, FILE_APPEND);
   $last = file_put_contents("last.json", $json);
 
   //ottengo l'oggetto json da utilizzare
-  $request = json_decode($json, false); //Se lo metti a falso, ritorna un oggeto, se lo metti a vero ritorna un array associativo
-  //imposto l'id della chat ed il messaggio che ho in questo momento
+  $request = json_decode($json, false);
   $chatID = $request->message->chat->id;
   $text = $request->message->text;
   
-  //controllo stato
   $status = $bot->checkStatus($chatID);
+  
+  //semplice comando fuori dal "Sistema Status", se viene usato questo comando annulla l'operazione in caso di adempimento
+  if($text == "/stop"){
+    $bot->sendMessage($chatID, "Operazione Interrotta!");
+    $bot->setStatus($chatID);
+  }
 
   //struttura di gestione, prima controla che ci siano dei comandi in sospeso, altrimenti vai con i comandi in
   //fase iniziale
@@ -25,17 +27,36 @@
     switch($status[0]){
       case "/somma":{
         switch($status[1]){
+          //crea l'array per il json ed inserisco il numero
           case "primoN":{
-            //conversione stringa in numero e controllo tramite intval
             $num = settype($text, "integer");
             $num = intval($num);
+            $bot->setStatus($chatID, "/somma:secondoN", json_encode(array("num1" => $num)));
+            $bot->sendMessage($chatID, "Inserisci il secondo numero da sommare");
+            break;
           }
+
+          //usa il json e somma
           case "secondoN":{
             $num2 = settype($text, "integer");
             $num2 = intval($num2);
+
+            $json = json_decode($bot->getVars($chatID));
+
+            $bot->sendMessage($chatID, "La somma dei due numeri è ".$num2+$json->num1);
             $bot->setStatus($chatID);
+            break;
           }
-        }
+          default:{
+            $bot->sendMessage($chatID, "Fase non esistente.");
+            break;
+          }
+        } 
+        break;
+      }
+      default:{
+        $bot->sendMessage($chatID, "Comando non esistente.");
+        break;
       }
     }
   }else{

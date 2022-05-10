@@ -50,11 +50,11 @@
      */
     public function checkStatus($chatID){
       $db = new mysqli("localhost", "root", "", "botTelegram");
-      $sql = "SELECT stato FROM status WHERE chatid = $chatID";
+      $sql = "SELECT * FROM status WHERE chatid = $chatID";
       $rs = $db->query($sql);
       if($rs->num_rows != 0){
-        $str = $rs->fetch_all();
-        return $result = explode(":", $str); //ritorna l'array se e' presente
+        $str = $rs->fetch_assoc();
+        return $result = explode(":", $str['stato']); //ritorna l'array se e' presente
       }else{
         return null; //ritorna null se vuoto
       }
@@ -114,14 +114,14 @@
     public function setVars($chatID, $vars = null){
       $db = new mysqli("localhost", "root", "", "botTelegram");
       //controllo presenza riga
-      if($db->query("SELECT * FROM status WHERE chatid = $chatID")->num_rows < 1){
+      if($db->query("SELECT * FROM status WHERE chatid = $chatID")->num_rows == 0){
         fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
           "chat_id" => $chatID,
           "text" => "Errore nell'inserimento delle variabili, riprovare."
         ));
         //update in caso di presenza di tupla
       }else{
-        $db->query("UPDATE status SET variabili = $vars WHERE chatid = $chatID");
+        $db->query("UPDATE status SET variabili = '$vars' WHERE chatid = $chatID");
       }
 
       $db->close();
