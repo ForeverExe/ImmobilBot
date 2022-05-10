@@ -82,7 +82,7 @@
         }
       //altrimenti crea
       }else{
-        $sql = "INSERT INTO status(chatid, stato, variabili) VALUES ($chatID, $fase, $vars)";
+        $sql = "INSERT INTO status (chatid, stato, variabili) VALUES( $chatID, '$fase', '$vars')";
         if($db->query($sql) == false){
           fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
             "chat_id" => $chatID,

@@ -29,18 +29,10 @@
             //conversione stringa in numero e controllo tramite intval
             $num = settype($text, "integer");
             $num = intval($num);
-
-            $json = array("primoN"=> $num);
-            $bot->setVars($chatID, json_encode($json));
-            $bot->setStatus($chatID, "/somma:secondoN");
           }
           case "secondoN":{
             $num2 = settype($text, "integer");
             $num2 = intval($num2);
-
-            $num = json_decode($bot->getVars($chatID));
-
-            $bot->sendMessage($chatID, "La somma di ".$num." e ".$num2."e': ".$num+$num2);
             $bot->setStatus($chatID);
           }
         }
