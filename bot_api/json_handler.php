@@ -78,14 +78,23 @@
           break;
         }
         case "/elencaImmobili":{
-          $db = new mysqli("localhost", "root", "", "p72e6");
-          $sql = "SELECT * FROM p73e6_immobili";
+          $db = new mysqli("localhost", "root", "", "p73e6");
+          $sql = "SELECT * FROM p73e6_immobile as i, p73e6_tipologia as t, p73e6_zona as z WHERE i.idZona = z.id AND i.idTipologia = t.id";
           $rs = $db->query($sql);
-
+          $result = $rs->fetch_assoc();
+          while($result != null){
+            $bot->sendHTMLMessage($chatID, "<pre>
+            <b>".$result['Nome_Casa']."</b>
+            <i>Via:</i> ".$result['via'].", ".$result['civico']."
+            <i>Piani: </i>".$result['piano']."<i> - Metratura: ".$result['metratura']."mq
+            <i>Locali: </i>".$result['locali']." - Zona: ".$result['Nome_Zona']." - Tipo: ".$result['Nome_Tipologia']."
+            </pre>");
+          $result = $rs->fetch_assoc();
+          }
           break;
         }
-        case "/elencaPerZone":{
-
+        case "/source":{
+          $bot->sendMessage($chatID, "https://github.com/ForeverExe/ImmobilBot");
           break;
         }
         case "null":{
