@@ -82,6 +82,7 @@
           $sql = "SELECT * FROM p73e6_immobile as i, p73e6_tipologia as t, p73e6_zona as z WHERE i.idZona = z.id AND i.idTipologia = t.id";
           $rs = $db->query($sql);
           $result = $rs->fetch_assoc();
+          $bot->sendMessage($chatID, "Arrivo prima del while ".$result);
           while($result != null){
             $bot->sendHTMLMessage($chatID, "<pre>
             <b>".$result['Nome_Casa']."</b>
@@ -91,6 +92,8 @@
             </pre>");
           $result = $rs->fetch_assoc();
           }
+
+          $db->close();
           break;
         }
         case "/source":{
