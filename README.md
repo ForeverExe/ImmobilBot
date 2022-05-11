@@ -1,3 +1,5 @@
+Esercizio 5 Info per IISS Galileo Galilei di Ostiglia
+
 Realizzare un Bot Telegram che aggiunga funzionalità al progetto di informatica: "Agenzia Immobiliare"
 
 Il bot deve quantomeno:
