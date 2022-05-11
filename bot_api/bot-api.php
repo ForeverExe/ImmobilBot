@@ -42,6 +42,13 @@
         "text" => $text
       ));
     }
+    public function sendHTMLMessage($chatId, $text){
+      fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
+        "chat_id" => $chatId,
+        "text" => $text,
+        "parse_mode" => "HTML"
+      ));
+    }
 
     /**
      * Controlla un determinato status nel DB
