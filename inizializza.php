@@ -23,6 +23,7 @@
     //3 stringe MUST per ricevere variabili
 
     var_dump($bot->checkStatus(798028646));
+    echo("<br/> <br/>");
   }
   catch(ErrorException $e){
     echo $e->getMessage();
