@@ -8,22 +8,21 @@
     echo("<br/> <br/>");
     //var_dump($bot->getUpdates());
     echo("<br/> <br/>");
-    //var_dump($bot->setWebhook("https://2e2f-78-138-33-188.ngrok.io/ImmobilBot/bot_api/json_handler.php"));
+    var_dump($bot->setWebhook("https://85e4-78-138-33-188.ngrok.io/ImmobilBot/bot_api/json_handler.php"));
     echo("<br/> <br/>");
     //var_dump($bot->getWebhookInfo());
-    $arr = $bot->checkStatus(798028646);
-    echo($arr[0]."-".$arr[1]);
     echo("<br/> <br/>");
 
     //$json = json_encode(array("primo" => 1));
     //$bot->setStatus(2312310, "primo", $json);
     //16-17 worka
 
-    $var = $bot->getVars(2312310);
+    $var = $bot->getVars(798028646);
     $jasone = json_decode($var, false);
-    echo($jasone->primo);
+    echo($jasone->num1);
     //3 stringe MUST per ricevere variabili
 
+    var_dump($bot->checkStatus(798028646));
   }
   catch(ErrorException $e){
     echo $e->getMessage();

@@ -54,7 +54,11 @@
       $rs = $db->query($sql);
       if($rs->num_rows != 0){
         $str = $rs->fetch_assoc();
-        return $result = explode(":", $str['stato']); //ritorna l'array se e' presente
+        $result = explode(":", $str['stato']); //ritorna l'array se e' presente
+        if($result[0] != "null")
+          return $result;
+        else
+          return null;
       }else{
         return null; //ritorna null se vuoto
       }
@@ -68,20 +72,12 @@
      * @param string fase Fase da inserire
      * @param string variabili Json codificato in stringa contenente variabili
      */
-    public function setStatus($chatID, $fase = NULL, $vars = NULL){
+    public function setStatus($chatID, $fase = "null", $vars = "null"){
       $db = new mysqli("localhost", "root", "", "botTelegram");
       //se presente nel db -> update
       if($db->query("SELECT * FROM status WHERE chatid = $chatID")->num_rows != 0){
-        $sqlInizio = "UPDATE status SET ";
-        $sqlFine= " WHERE chatid = $chatID";
-        
-        if($fase == NULL){
-          $sqlInizio += "variabili = NULL,";
-        }
-        if($vars == NULL){
-          $sqlInizio += "stato = NULL";
-        }
-        $sql = $sqlInizio + $sqlFine;
+
+        $sql = "UPDATE status SET stato = '$fase', variabili='$vars' WHERE chatid = $chatID";
         if($db->query($sql) == false){
           echo($db->error_log);
         }
