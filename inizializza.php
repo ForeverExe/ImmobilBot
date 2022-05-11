@@ -2,7 +2,7 @@
   require_once('bot_api/bot-api.php');
 
   try{
-    $bot = new TelegramBot("5237718388:AAGZBi5qCrLIH6KgT8P2jYi3ZZ69R71HCjk");
+    $bot = new TelegramBot("XXX");
     
     var_dump($bot->getMe());
     echo("<br/> <br/>");
