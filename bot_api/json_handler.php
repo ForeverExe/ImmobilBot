@@ -3,7 +3,7 @@
   require_once "./bot-api.php";
   //I NULL SONO EQUIVALENTI AI DEFAULT PER I COMANDI NON RICONOSCIUTI
 
-  $bot = new TelegramBot("5237718388:AAGZBi5qCrLIH6KgT8P2jYi3ZZ69R71HCjk");
+  $bot = new TelegramBot("x");
 
   $json = file_get_contents('php://input');
   $result = file_put_contents("hook.log", $json, FILE_APPEND);
