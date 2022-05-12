@@ -53,6 +53,20 @@
           } 
           break;
         }
+        case "/login":{
+          switch($status[1]){
+            case "mail":{
+              $bot->setStatus($chatID, "/login:passw", json_encode(array("mail" => $text)));
+              $bot->sendMessage($chatID, "Inserisci la password:");
+              break;
+            }
+            case "passw:":{
+              
+              break;
+            }
+          }
+          break;
+        }
         default:{
           $bot->sendMessage($chatID, "Comando non esistente.");
           break;
@@ -60,16 +74,22 @@
       }
     }else{
       switch($text){
-        case "/ehi":{
-          $bot->sendMessage($chatID, "ehi");
-          break;
-        }
-        case "/ciao":{
-          $bot->sendMessage($chatID, "Ciao!");
+        case "/start":{
+          $bot->sendMessage($chatID, "ImmobilBot V0.5 - By Matteo Besutti 5I
+          /elencaImmobili - Elenca gli immobili presenti sulla piattaforma
+          /login - Effettua il login
+          /logout - Effettua il logout
+          /stop - Interrompi un comando a più fasi (ad esempio il login)
+          /source - Link al git del bot");
           break;
         }
         case "/printa":{
           $bot->sendMessage($chatID, "Scrivi la stringa da stampare");
+          break;
+        }
+        case "/login":{
+          $bot->sendMessage($chatID, "Inserisci la password utente:");
+          $bot->setStatus($chatID, "/login:mail");
           break;
         }
         case "/somma":{
