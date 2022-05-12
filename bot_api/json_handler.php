@@ -79,17 +79,24 @@
         }
         case "/elencaImmobili":{
           $db = new mysqli("localhost", "root", "", "p73e6");
-          $sql = "SELECT * FROM p73e6_immobile as i, p73e6_tipologia as t, p73e6_zona as z WHERE i.idZona = z.id AND i.idTipologia = t.id";
+          $sql = "SELECT i.*, t.nome as Nome_Tipologia, z.nome as Nome_Zona FROM p73e6_immobile as i, p73e6_tipologia as t, p73e6_zona as z WHERE i.idZona = z.id AND i.idTipologia = t.id";
           $rs = $db->query($sql);
           $result = $rs->fetch_assoc();
-          $bot->sendMessage($chatID, "Arrivo prima del while ".$result);
           while($result != null){
-            $bot->sendHTMLMessage($chatID, "<pre>
-            <b>".$result['Nome_Casa']."</b>
-            <i>Via:</i> ".$result['via'].", ".$result['civico']."
-            <i>Piani: </i>".$result['piano']."<i> - Metratura: ".$result['metratura']."mq
-            <i>Locali: </i>".$result['locali']." - Zona: ".$result['Nome_Zona']." - Tipo: ".$result['Nome_Tipologia']."
-            </pre>");
+            $nome = $result['Nome_Casa'];
+            $via = $result['via'];
+            $civico = $result['civico'];
+            $piani = $result['piano'];
+            $metratura = $result['Metratura'];
+            $locali = $result['locali'];
+            $tipo = $result['Nome_Tipologia'];
+            $zona = $result['Nome_Zona'];
+
+            $bot->sendMessage($chatID, "
+            $nome
+            Via: $via, $civico
+            Piani: $piani - Metratura: $metratura mq
+            Locali: $locali - Zona: $zona - Tipo: $tipo");
           $result = $rs->fetch_assoc();
           }
 
@@ -101,7 +108,7 @@
           break;
         }
         case "null":{
-          $bot->sendMessage($chatID, "Comando non riconosciuto.");
+          $bot->sendMessage($chatID, "Comando non riconosciuto. Sei in una fase?");
           break;
         }
         default:{
