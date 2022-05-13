@@ -12,7 +12,7 @@
   define("IMMO_PASS", "");
   define("IMMO_DATA", "p73e6");
 
-  $bot = new TelegramBot("");
+  $bot = new TelegramBot("5237718388:AAGZBi5qCrLIH6KgT8P2jYi3ZZ69R71HCjk");
 
   $json = file_get_contents('php://input');
   $result = file_put_contents("hook.log", $json, FILE_APPEND);
@@ -74,7 +74,7 @@
             case "passw":{ // non entra in questa fase, le query sono ok. Provato su HeidiSQL
               $mail = json_decode($bot->getVars($chatID));
               $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
-              $sql = "SELECT id, nome, cognome FROM p73e6_proprietario WHERE mail = $mail->mail AND passwd = ".md5($text);
+              $sql = "SELECT id, nome, cognome FROM p73e6_proprietario WHERE mail = '$mail->mail' AND passwd = '".md5($text)."'";
               $rs = $db->query($sql);
               if($rs->num_rows == 1){
                 $result = $rs->fetch_assoc();
