@@ -29,8 +29,10 @@
   if($text == "/stop"){
     $bot->sendMessage($chatID, "Operazione Interrotta!");
     $bot->setStatus($chatID);
+
   }else{
-    //struttura di gestione, prima controla che ci siano dei comandi in sospeso, altrimenti vai con i comandi in
+    //struttura di gestione, prima controlla che ci siano dei comandi in sospeso, altrimenti vai con i comandi in
+
     //fase iniziale
     if($status != null){
       switch($status[0]){
@@ -69,12 +71,11 @@
               $bot->sendMessage($chatID, "Inserisci la password:");
               break;
             }
-            case "passw":{
+            case "passw":{ // non entra in questa fase
               $mail = json_decode($bot->getVars($chatID));
               $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
               $sql = "SELECT id, nome, cognome FROM p73e6_proprietario WHERE mail = $mail->mail AND passwd = ".md5($text);
               $rs = $db->query($sql);
-              $bot->sendMessage($chatID, "arrivo");
               if($rs->num_rows == 1){
                 $result = $rs->fetch_assoc();
                 $nome = $result['nome'];
@@ -103,15 +104,17 @@
         }
       }
     }else{
+      //comandi iniziali
       switch($text){
         case "/start":{
           $bot->sendMessage($chatID, "ImmobilBot V0.5 - By Matteo Besutti 5I
           /elencaImmobili - Elenca gli immobili presenti sulla piattaforma
-          /login - Effettua il login
-          /logout - Effettua il logout
+          /login - Effettua il login [WIP]
+          /logout - Effettua il logout [WIP]
           /stop - Interrompi un comando a più fasi (ad esempio il login)
           /app - Link all'applicativo
-          /source - Link al git del bot");
+          /source - Link al git del bot
+          /somma - Fai la somma di due numeri");
           break;
         }
         case "/login":{
