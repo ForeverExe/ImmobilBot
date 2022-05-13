@@ -12,7 +12,7 @@
   define("IMMO_PASS", "");
   define("IMMO_DATA", "p73e6");
 
-  $bot = new TelegramBot("5237718388:AAGZBi5qCrLIH6KgT8P2jYi3ZZ69R71HCjk");
+  $bot = new TelegramBot("");
 
   $json = file_get_contents('php://input');
   $result = file_put_contents("hook.log", $json, FILE_APPEND);
