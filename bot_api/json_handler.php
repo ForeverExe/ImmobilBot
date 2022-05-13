@@ -224,8 +224,9 @@
         case "/start":{
           $bot->sendMessage($chatID, "ImmobilBot V0.5 - By Matteo Besutti 5I
           /elencaImmobili - Elenca gli immobili presenti sulla piattaforma
+          /elencoFiltered - Scopri gli immobili secondo diversi filtri
           /login - Effettua il login [WIP]
-          /logout - Effettua il logout [WIP]
+          /logout - Effettua il logout
           /stop - Interrompi un comando a più fasi (ad esempio il login)
           /app - Link all'applicativo
           /source - Link al git del bot
