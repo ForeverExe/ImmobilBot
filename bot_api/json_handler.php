@@ -1,9 +1,18 @@
 <?php
   require_once "./fetch_api.php";
   require_once "./bot-api.php";
-  //I NULL SONO EQUIVALENTI AI DEFAULT PER I COMANDI NON RICONOSCIUTI
 
-  $bot = new TelegramBot("x");
+  define("BOT_HOST", "localhost");
+  define("BOT_USER", "root");
+  define("BOT_PASS", "");
+  define("BOT_DATA", "botTelegram");
+
+  define("IMMO_HOST", "localhost");
+  define("IMMO_USER", "root");
+  define("IMMO_PASS", "");
+  define("IMMO_DATA", "p73e6");
+
+  $bot = new TelegramBot("5237718388:AAGZBi5qCrLIH6KgT8P2jYi3ZZ69R71HCjk");
 
   $json = file_get_contents('php://input');
   $result = file_put_contents("hook.log", $json, FILE_APPEND);
@@ -61,7 +70,27 @@
               break;
             }
             case "passw:":{
-              
+              $mail = json_decode($bot->getVars($chatID));
+              $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
+              $sql = "SELECT id, nome, cognome FROM p73e6_proprietario WHERE mail = $mail->mail AND passwd = ".md5($text);
+              $rs = $db->query($sql);
+              if($rs->num_rows == 1){
+                $result = $rs->fetch_assoc();
+                $nome = $result['nome'];
+                $cognome = $result['cognome'];
+                $bot->sendMessage($chatID, "Sei loggato come: $cognome $nome");
+
+                $sql = "UPDATE p73e6_proprietario SET loggato = $chatID WHERE id = ".$result['id'];
+                if(!$db->query($sql)){
+                  $bot->sendMessage($chatID, "Errore nell'UPDATE");
+                }
+
+                $bot->setStatus($chatID);
+              }else{
+                $bot->sendMessage($chatID, "Credenziali errate o mancanti, reinserisci la mail e la password.");
+                $bot->setStatus($chatID, "/login:mail");
+              }
+              $db->close();
               break;
             }
           }
@@ -80,16 +109,40 @@
           /login - Effettua il login
           /logout - Effettua il logout
           /stop - Interrompi un comando a più fasi (ad esempio il login)
+          /app - Link all'applicativo
           /source - Link al git del bot");
           break;
         }
-        case "/printa":{
-          $bot->sendMessage($chatID, "Scrivi la stringa da stampare");
+        case "/login":{
+          $bot->sendMessage($chatID, "Login utente - Sei un amministratore? Digita \"/stop\" e successivamente \"/app\" per collegarti all'applicativo dove gestire utenti ed immobili!");
+          $bot->sendMessage($chatID, "Inserisci la mail utente:");
+          $bot->setStatus($chatID, "/login:mail");
           break;
         }
-        case "/login":{
-          $bot->sendMessage($chatID, "Inserisci la password utente:");
-          $bot->setStatus($chatID, "/login:mail");
+        case "/logout":{
+          $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
+          $sql = "SELECT nome, cognome FROM p73e6_proprietario WHERE loggato = $chatID";
+          $rs = $db->query($sql);
+          if($rs->num_rows > 0){
+            $result = $rs->fetch_assoc();
+            $nome = $result['nome'];
+            $cognome = $result['cognome'];
+            $bot->sendMessage($chatID, "Logout effettuato da: $nome $cognome");
+
+            $sql = "UPDATE p73e6_proprietario SET loggato = NULL WHERE loggato = $chatID";
+            if(!$db->query($sql)){
+              $bot->sendMessage($chatID, "Errore nel cancellare su 'loggato'");
+            }
+
+          }else{
+            $bot->sendMessage($chatID, "Hai già effettuato il logout!");
+          }
+          
+          break;
+        }
+        case "/app":{
+          $bot->sendHTMLMessage($chatID, "Copia il link nel tuo browser per entrare nell'applicativo (UI ottimizzata per PC)");
+          $bot->sendHTMLMESSAGE($chatID, "<pre>http://localhost/webdeveloping/p73e6</pre>");
           break;
         }
         case "/somma":{
@@ -98,7 +151,7 @@
           break;
         }
         case "/elencaImmobili":{
-          $db = new mysqli("localhost", "root", "", "p73e6");
+          $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
           $sql = "SELECT i.*, t.nome as Nome_Tipologia, z.nome as Nome_Zona FROM p73e6_immobile as i, p73e6_tipologia as t, p73e6_zona as z WHERE i.idZona = z.id AND i.idTipologia = t.id";
           $rs = $db->query($sql);
           $result = $rs->fetch_assoc();
@@ -119,7 +172,6 @@
             Locali: $locali - Zona: $zona - Tipo: $tipo");
           $result = $rs->fetch_assoc();
           }
-
           $db->close();
           break;
         }

@@ -1,8 +1,17 @@
 <?php
   require_once('fetch_api.php');
-  
-  class TelegramBot {
 
+  define("BOT_HOST", "localhost");
+  define("BOT_USER", "root");
+  define("BOT_PASS", "");
+  define("BOT_DATA", "botTelegram");
+
+  define("IMMO_HOST", "localhost");
+  define("IMMO_USER", "root");
+  define("IMMO_PASS", "");
+  define("IMMO_DATA", "p73e6");
+
+  class TelegramBot {
     protected $botId;
     protected $url;
 
@@ -46,7 +55,7 @@
       fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
         "chat_id" => $chatId,
         "text" => $text,
-        "parse_mode" => "html"
+        "parse_mode" => "HTML"
       ));
     }
 
@@ -56,7 +65,7 @@
      * @return Null In caso non sia presente uno stato nel DB
      */
     public function checkStatus($chatID){
-      $db = new mysqli("localhost", "root", "", "botTelegram");
+      $db = new mysqli(BOT_HOST, BOT_USER, BOT_PASS, BOT_DATA);
       $sql = "SELECT * FROM status WHERE chatid = $chatID";
       $rs = $db->query($sql);
       if($rs->num_rows != 0){
@@ -80,7 +89,7 @@
      * @param string variabili Json codificato in stringa contenente variabili
      */
     public function setStatus($chatID, $fase = "null", $vars = "null"){
-      $db = new mysqli("localhost", "root", "", "botTelegram");
+      $db = new mysqli(BOT_HOST, BOT_USER, BOT_PASS, BOT_DATA);
       //se presente nel db -> update
       if($db->query("SELECT * FROM status WHERE chatid = $chatID")->num_rows != 0){
 
@@ -104,7 +113,7 @@
      * @param int chatID id della chat interessata
      */
     public function getVars($chatID){
-      $db = new mysqli("localhost", "root", "", "botTelegram");
+      $db = new mysqli(BOT_HOST, BOT_USER, BOT_PASS, BOT_DATA);
       $rs = $db->query("SELECT * FROM status WHERE chatid = $chatID");
       if($rs->num_rows != 0){
         $result = $rs->fetch_assoc();
@@ -123,7 +132,7 @@
      * @param string vars stringa univoca contenente stringa da usare come json
      */
     public function setVars($chatID, $vars = null){
-      $db = new mysqli("localhost", "root", "", "botTelegram");
+      $db = new mysqli(BOT_HOST, BOT_USER, BOT_PASS, BOT_DATA);
       //controllo presenza riga
       if($db->query("SELECT * FROM status WHERE chatid = $chatID")->num_rows == 0){
         fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
