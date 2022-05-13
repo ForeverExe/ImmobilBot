@@ -71,7 +71,7 @@
               $bot->sendMessage($chatID, "Inserisci la password:");
               break;
             }
-            case "passw":{ // non entra in questa fase, le query sono ok. Provato su HeidiSQL
+            case "passw":{ //problema nell'if a riga 79
               $mail = json_decode($bot->getVars($chatID));
               $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
               $sql = "SELECT id, nome, cognome FROM p73e6_proprietario WHERE mail = '$mail->mail' AND passwd = '".md5($text)."'";
