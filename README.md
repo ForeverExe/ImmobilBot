@@ -7,8 +7,14 @@
 >   - aggiungere almeno 2 funzionalità al progetto originale
 >   - prevedere l'esistenza di due tipi di utenza (eg.: amministratore e utente oppure acquirente e venditore oppure ecc)
 
+## Known Issues:
+- La fase "passw" del login non viene eseguita
 
 //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+
+Il bot prevede 2 utenze:
+ - L'utente base: quello che usa semplicemente il bot senza login su un account registrato sulla piattaforma;
+ - L'utente registrato: che ha fatto un login usando un account presente sulla piattaforma.
 
 COMANDI: 
 
