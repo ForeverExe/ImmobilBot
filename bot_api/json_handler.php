@@ -69,11 +69,12 @@
               $bot->sendMessage($chatID, "Inserisci la password:");
               break;
             }
-            case "passw:":{
+            case "passw":{
               $mail = json_decode($bot->getVars($chatID));
               $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
               $sql = "SELECT id, nome, cognome FROM p73e6_proprietario WHERE mail = $mail->mail AND passwd = ".md5($text);
               $rs = $db->query($sql);
+              $bot->sendMessage($chatID, "arrivo");
               if($rs->num_rows == 1){
                 $result = $rs->fetch_assoc();
                 $nome = $result['nome'];
