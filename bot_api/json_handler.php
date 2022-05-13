@@ -98,6 +98,121 @@
           }
           break;
         }
+        case "/elencoFiltered":{
+          switch($text){
+            case "/alfa":{
+              $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
+              $sql = "SELECT i.*, i.nome as Nome_Casa, t.nome as Nome_Tipologia, z.nome as Nome_Zona FROM p73e6_immobile as i, p73e6_tipologia as t, p73e6_zona as z WHERE i.idZona = z.id AND i.idTipologia = t.id ORDER BY Nome_Casa ASC";
+              $rs = $db->query($sql);
+              $result = $rs->fetch_assoc();
+              while($result != null){
+                $nome = $result['Nome_Casa'];
+                $via = $result['via'];
+                $civico = $result['civico'];
+                $piani = $result['piano'];
+                $metratura = $result['Metratura'];
+                $locali = $result['locali'];
+                $tipo = $result['Nome_Tipologia'];
+                $zona = $result['Nome_Zona'];
+    
+                $bot->sendMessage($chatID, "$nome
+                Via: $via, $civico
+                Piani: $piani - Metratura: $metratura mq
+                Locali: $locali - Zona: $zona - Tipo: $tipo");
+              $result = $rs->fetch_assoc();
+              }
+              $db->close();
+              $bot->setStatus($chatID);
+              break;
+            }
+            case "/reddito":{
+              $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
+              $sql = "SELECT i.*, i.nome AS Nome_Casa, t.nome AS Nome_Tipologia, z.nome AS Nome_Zona, r.prezzo_mq
+              FROM p73e6_immobile AS i, p73e6_tipologia AS t, p73e6_zona AS z, p73e6_rendita_annua AS r
+              WHERE i.idZona = z.id AND i.idTipologia = t.id AND r.idZona = z.id AND r.idTipologia = t.id AND r.anno = 2022
+              ORDER BY r.prezzo_mq ASC";
+              $rs = $db->query($sql);
+              $result = $rs->fetch_assoc();
+              while($result != null){
+                $nome = $result['Nome_Casa'];
+                $via = $result['via'];
+                $civico = $result['civico'];
+                $piani = $result['piano'];
+                $metratura = $result['Metratura'];
+                $locali = $result['locali'];
+                $tipo = $result['Nome_Tipologia'];
+                $zona = $result['Nome_Zona'];
+                $reddito = $result['prezzo_mq'];
+    
+                $bot->sendMessage($chatID, "$nome
+                Via: $via, $civico
+                Piani: $piani - Metratura: $metratura mq - Prezzo al mq: $reddito
+                Locali: $locali - Zona: $zona - Tipo: $tipo");
+              $result = $rs->fetch_assoc();
+              }
+              $db->close();
+              $bot->setStatus($chatID);
+              break;
+            }
+            case "/zona":{
+              $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
+              $sql = "SELECT i.*, t.nome AS Nome_Tipologia, z.nome AS Nome_Zona
+              FROM p73e6_immobile AS i, p73e6_tipologia AS t, p73e6_zona AS z
+              WHERE i.idZona = z.id AND i.idTipologia = t.id
+              ORDER BY z.nome ASC";
+              $rs = $db->query($sql);
+              $result = $rs->fetch_assoc();
+              while($result != null){
+                $nome = $result['nome'];
+                $via = $result['via'];
+                $civico = $result['civico'];
+                $piani = $result['piano'];
+                $metratura = $result['Metratura'];
+                $locali = $result['locali'];
+                $tipo = $result['Nome_Tipologia'];
+                $zona = $result['Nome_Zona'];
+    
+                $bot->sendMessage($chatID, "$nome
+                Via: $via, $civico
+                Piani: $piani - Metratura: $metratura mq - Prezzo al mq: $reddito
+                Locali: $locali - Zona: $zona - Tipo: $tipo");
+              $result = $rs->fetch_assoc();
+              }
+              $db->close();
+              $bot->setStatus($chatID);
+              break;
+            }
+            case "/tipo":{
+              $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
+              $sql = "SELECT i.*, t.nome AS Nome_Tipologia, z.nome AS Nome_Zona
+              FROM p73e6_immobile AS i, p73e6_tipologia AS t, p73e6_zona AS z
+              WHERE i.idZona = z.id AND i.idTipologia = t.id
+              ORDER BY t.nome ASC";
+              $rs = $db->query($sql);
+              $result = $rs->fetch_assoc();
+              while($result != null){
+                $nome = $result['nome'];
+                $via = $result['via'];
+                $civico = $result['civico'];
+                $piani = $result['piano'];
+                $metratura = $result['Metratura'];
+                $locali = $result['locali'];
+                $tipo = $result['Nome_Tipologia'];
+                $zona = $result['Nome_Zona'];
+    
+                $bot->sendMessage($chatID, "$nome
+                Via: $via, $civico
+                Piani: $piani - Metratura: $metratura mq - Prezzo al mq: $reddito
+                Locali: $locali - Zona: $zona - Tipo: $tipo");
+              $result = $rs->fetch_assoc();
+              }
+              $db->close();
+              $bot->setStatus($chatID);
+              break;
+            }
+          }
+          break;
+        }
         default:{
           $bot->sendMessage($chatID, "Comando non esistente.");
           break;
@@ -156,7 +271,7 @@
         }
         case "/elencaImmobili":{
           $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
-          $sql = "SELECT i.*, t.nome as Nome_Tipologia, z.nome as Nome_Zona FROM p73e6_immobile as i, p73e6_tipologia as t, p73e6_zona as z WHERE i.idZona = z.id AND i.idTipologia = t.id";
+          $sql = "SELECT i.*, i.nome as Nome_Casa, t.nome as Nome_Tipologia, z.nome as Nome_Zona FROM p73e6_immobile as i, p73e6_tipologia as t, p73e6_zona as z WHERE i.idZona = z.id AND i.idTipologia = t.id";
           $rs = $db->query($sql);
           $result = $rs->fetch_assoc();
           while($result != null){
@@ -169,14 +284,22 @@
             $tipo = $result['Nome_Tipologia'];
             $zona = $result['Nome_Zona'];
 
-            $bot->sendMessage($chatID, "
-            $nome
+            $bot->sendMessage($chatID, "$nome
             Via: $via, $civico
             Piani: $piani - Metratura: $metratura mq
             Locali: $locali - Zona: $zona - Tipo: $tipo");
           $result = $rs->fetch_assoc();
           }
           $db->close();
+          break;
+        }
+        case "/elencoFiltered":{
+          $bot->sendMessage($chatID, "Ricerca Filtrata. Seleziona una delle opzioni:
+          - /alfa Alfabetico
+          - /reddito Per Reddito (In caso ne abbiano uno)
+          - /zona Per Zona
+          - /tipo Per Tipo");
+          $bot->setStatus($chatID, "/elencoFiltered");
           break;
         }
         case "/source":{
