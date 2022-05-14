@@ -15,6 +15,7 @@
 Il bot prevede 2 utenze:
  - L'utente base: quello che usa semplicemente il bot senza login su un account registrato sulla piattaforma;
  - L'utente registrato: che ha fatto un login usando un account presente sulla piattaforma.
+ (Attenzione: Il login utilizza un campo aggiuntivo presente su p73e6_proprietario, contenente un campo int con l'id della chat dove e' loggato)
 
 COMANDI: 
 
