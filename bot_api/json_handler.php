@@ -12,17 +12,18 @@
   define("IMMO_PASS", "");
   define("IMMO_DATA", "p73e6");
 
-  $bot = new TelegramBot("your token here");
+  $bot = new TelegramBot("Your API key Here");
 
   $json = file_get_contents('php://input');
   $result = file_put_contents("hook.log", $json, FILE_APPEND);
   $last = file_put_contents("last.json", $json);
 
-  //ottengo l'oggetto json da utilizzare
+  //ottengo l'oggetto json da utilizzare ed i dati principali
   $request = json_decode($json, false);
   $chatID = $request->message->chat->id;
   $text = $request->message->text;
   
+  //controllo dello status con ritorno
   $status = $bot->checkStatus($chatID);
   
   //semplice comando fuori dal "Sistema Status", se viene usato questo comando annulla l'operazione in caso di adempimento
@@ -31,11 +32,12 @@
     $bot->setStatus($chatID);
 
   }else{
-    //struttura di gestione, prima controlla che ci siano dei comandi in sospeso, altrimenti vai con i comandi in
-
-    //fase iniziale
+    //struttura di gestione, prima controlla che ci siano dei comandi in sospeso, 
+    //altrimenti vai con i comandi in fase iniziale
     if($status != null){
+      //sistema di scelte dei comandi e le loro fasi
       switch($status[0]){
+        //fasi della somma
         case "/somma":{
           switch($status[1]){
             //crea l'array per il json ed inserisco il numero
@@ -43,7 +45,7 @@
               settype($text, "integer");
               $num = intval($text);
               $bot->setStatus($chatID, "/somma:secondoN", json_encode(array("num1" => $num)));
-              $bot->sendMessage($chatID, "Inserisci il secondo numero da sommare");
+              $bot->sendMessage($chatID, "Scrivi il secondo numero da sommare");
               break;
             }
             //usa il json e somma
@@ -64,6 +66,7 @@
           } 
           break;
         }
+        //fasi login
         case "/login":{
           switch($status[1]){
             case "mail":{
@@ -98,6 +101,7 @@
           }
           break;
         }
+        //fasi elenchi filtrati
         case "/elencoFiltered":{
           switch($text){
             case "/alfa":{
@@ -223,7 +227,6 @@
       switch($text){
         case "/start":{
           $bot->sendMessage($chatID, "ImmobilBot V0.5 - By Matteo Besutti 5I
-          /elencaImmobili - Elenca gli immobili presenti sulla piattaforma
           /elencoFiltered - Scopri gli immobili secondo diversi filtri
           /login - Effettua il login [WIP]
           /logout - Effettua il logout
@@ -235,7 +238,7 @@
         }
         case "/login":{
           $bot->sendMessage($chatID, "Login utente - Sei un amministratore? Digita \"/stop\" e successivamente \"/app\" per collegarti all'applicativo dove gestire utenti ed immobili!");
-          $bot->sendMessage($chatID, "Inserisci la mail utente:");
+          $bot->sendMessage($chatID, "Scrivi la mail utente:");
           $bot->setStatus($chatID, "/login:mail");
           break;
         }
@@ -266,32 +269,8 @@
           break;
         }
         case "/somma":{
-          $bot->sendMessage($chatID, "Inserisci il primo numero da sommare");
+          $bot->sendMessage($chatID, "Scrivi il primo numero da sommare");
           $bot->setStatus($chatID, "/somma:primoN");
-          break;
-        }
-        case "/elencaImmobili":{
-          $db = new mysqli(IMMO_HOST, IMMO_USER, IMMO_PASS, IMMO_DATA);
-          $sql = "SELECT i.*, i.nome as Nome_Casa, t.nome as Nome_Tipologia, z.nome as Nome_Zona FROM p73e6_immobile as i, p73e6_tipologia as t, p73e6_zona as z WHERE i.idZona = z.id AND i.idTipologia = t.id";
-          $rs = $db->query($sql);
-          $result = $rs->fetch_assoc();
-          while($result != null){
-            $nome = $result['Nome_Casa'];
-            $via = $result['via'];
-            $civico = $result['civico'];
-            $piani = $result['piano'];
-            $metratura = $result['Metratura'];
-            $locali = $result['locali'];
-            $tipo = $result['Nome_Tipologia'];
-            $zona = $result['Nome_Zona'];
-
-            $bot->sendMessage($chatID, "$nome
-            Via: $via, $civico
-            Piani: $piani - Metratura: $metratura mq
-            Locali: $locali - Zona: $zona - Tipo: $tipo");
-          $result = $rs->fetch_assoc();
-          }
-          $db->close();
           break;
         }
         case "/elencoFiltered":{

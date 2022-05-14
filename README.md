@@ -8,7 +8,7 @@
 >   - prevedere l'esistenza di due tipi di utenza (eg.: amministratore e utente oppure acquirente e venditore oppure ecc)
 
 ## Known Issues:
-- La fase "passw" del login non viene eseguita
+- La fase "passw" del login non viene eseguita, le query sono corrette (testate su HeidiSQL) ma non esegue (rr 79 - 82)
 
 //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
 
@@ -25,6 +25,6 @@ COMANDI:
 | /source | Link git del bot |
 | /login | [WIP] Effettua il login utente |
 | /logout | Effettua il logout utente |
-| /elencaImmobili | Fai un elenco degli immobili presenti |
+| /elencoFiltered | Fai un elenco degli immobili presenti sotto diversi filri |
+| /somma | Fai la somma di due numeri |
 | /stop | Annulla il comando in esecuzione |
-| /somma | Fai la somma di due numeri (tengo per ricordo 😉 )|

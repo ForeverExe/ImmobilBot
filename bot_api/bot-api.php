@@ -23,21 +23,22 @@
       return "https://api.telegram.org/bot$this->botId/$methodName";
     }
 
+    //info base del Bot
     public function getMe(){
       return json_decode(fetch($this->_getApiMethodUrl("getMe"), 'POST'));
     }
-
+    //ottieni le informazioni da telegram (Attenzione, alternativa al webHook, non funziona se si ha un webhook impostato)
     public function getUpdates(){
       return json_decode(fetch($this->_getApiMethodUrl("getUpdates"), 'POST'));
     }
-
+    //imposta un webhook
     public function setWebhook($argurl){
       $this->url = $argurl;
       return json_decode(fetch($this->_getApiMethodUrl("setWebhook"), 'POST', array(
         "url" => $argurl
       )));
     }
-
+    //ottieni le informazioni del webhook
     public function getWebhookInfo(){
       if(isset($this->url)){
         return json_decode(fetch($this->_getApiMethodUrl("getWebhookInfo")));
@@ -45,12 +46,23 @@
         echo("Webhook not set");
     }
 
+    /**
+     *  @param int $chatId l'ID della chat utilizzata
+     *  @param string $text il testo da mandare nella chat
+     *  @description Manda un messaggio alla chat su telegram attraverso il bot
+     */
     public function sendMessage($chatId, $text){
       fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
         "chat_id" => $chatId,
         "text" => $text
       ));
     }
+    /**
+     *  Manda un messaggio alla chat su telegram attraverso il bot.
+     *  Rispetto a sendMessage(), questa variante supporta la codifica HTML 
+     *  @param int $chatId l'ID della chat utilizzata
+     *  @param string $text il testo da mandare nella chat
+     */
     public function sendHTMLMessage($chatId, $text){
       fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
         "chat_id" => $chatId,
@@ -60,7 +72,8 @@
     }
 
     /**
-     * Controlla un determinato status nel DB
+     * Controlla e ritorna un determinato status nel DB
+     * @param INT $chatID Id della chat corrente
      * @return Array Array della fase, [0] = comando [1] = fase
      * @return Null In caso non sia presente uno stato nel DB
      */
@@ -109,8 +122,10 @@
     }
 
     /**
-     * Ritorna le variabili dalla fase, dato una determinata chat. E' una stringa json da fare con encode/decode
+     * Ritorna le variabili dalla fase, dato una determinata chat. E' una stringa json da decdificare
      * @param int chatID id della chat interessata
+     * @return String La stringa json da decodifiare contenente le informazioni
+     * @return Null In caso non ci siano variabili
      */
     public function getVars($chatID){
       $db = new mysqli(BOT_HOST, BOT_USER, BOT_PASS, BOT_DATA);
@@ -120,28 +135,6 @@
         return $result['variabili'];
       }else{
         return null;
-      }
-
-      $db->close();
-    }
-
-    /**
-     * Imposta le variabili della fase data una chat. E' una stringa json da fare con encode/decode
-     * *ATTENZIONE* Di default $vars equivale a null, chiamando la funzione senza inserire argomenti cancellera' le variabili attualmente sul DB 
-     * @param int chatID id della chat interessata
-     * @param string vars stringa univoca contenente stringa da usare come json
-     */
-    public function setVars($chatID, $vars = null){
-      $db = new mysqli(BOT_HOST, BOT_USER, BOT_PASS, BOT_DATA);
-      //controllo presenza riga
-      if($db->query("SELECT * FROM status WHERE chatid = $chatID")->num_rows == 0){
-        fetch($this->_getApiMethodUrl("sendMessage"), 'POST', array(
-          "chat_id" => $chatID,
-          "text" => "Errore nell'inserimento delle variabili, riprovare."
-        ));
-        //update in caso di presenza di tupla
-      }else{
-        $db->query("UPDATE status SET variabili = '$vars' WHERE chatid = $chatID");
       }
 
       $db->close();
